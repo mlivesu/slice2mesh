@@ -13,9 +13,13 @@ QMAKE_CXXFLAGS += -Wno-deprecated-declarations # gluQuadric gluSphere and gluCyl
 # ------------- SOURCES -------------- #
 # ------------------------------------ #
 SOURCES += main.cpp
+SOURCES += trianglulate.cpp
+SOURCES += edge_processing.cpp
 SOURCES += slice2plc.cpp
 #
 HEADERS += common.h
+HEADERS += trianglulate.h
+HEADERS += edge_processing.h
 HEADERS += slice2plc.h
 
 # ------------------------------------ #
@@ -33,9 +37,9 @@ QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override # shows up in vtk7...
 #
 DEFINES        += CINOLIB_USES_TRIANGLE
 LIBS           += -ltriangle
-INCLUDEPATH    += /usr/local/include
+INCLUDEPATH    *= /usr/local/include
 #
 DEFINES        += CINOLIB_USES_TETGEN
 DEFINES        += TETLIB
 LIBS           += -ltet
-INCLUDEPATH    += /usr/local/include
+INCLUDEPATH    *= /usr/local/include

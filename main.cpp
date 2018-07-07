@@ -2,6 +2,7 @@
 #include <cinolib/gui/qt/qt_gui_tools.h>
 #include <cinolib/drawable_sliced_object.h>
 #include "common.h"
+#include "slice2plc.h"
 
 using namespace cinolib;
 
@@ -16,6 +17,9 @@ int main(int argc, char *argv[])
     GLcanvas gui;
     gui.push_obj(&obj);
     gui.show();
+
+    DrawableTrimesh<> plc;
+    slice2plc(obj, plc);
 
     // CMD+1 to show visual controls.
     SurfaceMeshControlPanel<DrawableSlicedObj<>> panel(&obj, &gui);

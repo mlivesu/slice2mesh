@@ -17,6 +17,7 @@ enum
     TINY_FEATURE  = 0x00000010, // Features so tiny that are better to remove prior tetmeshing the PLC...
 };
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 typedef struct
 {
@@ -50,6 +51,7 @@ typedef struct
 }
 E_data;
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 typedef struct
 {
@@ -62,5 +64,15 @@ typedef struct
     int lifted_image = -1;
 }
 V_data;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+typedef struct
+{
+    std::vector<V_data>              v_list;
+    std::vector<std::vector<E_data>> e_list;
+}
+SLICE2MESH_data;
+
 
 #endif // COMMON_TYPES_H
