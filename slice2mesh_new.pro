@@ -13,7 +13,10 @@ QMAKE_CXXFLAGS += -Wno-deprecated-declarations # gluQuadric gluSphere and gluCyl
 # ------------- SOURCES -------------- #
 # ------------------------------------ #
 SOURCES += main.cpp
-
+SOURCES += slice2plc.cpp
+#
+HEADERS += common.h
+HEADERS += slice2plc.h
 
 # ------------------------------------ #
 # ------- EXTERNAL DEPENDENCIES ------ #

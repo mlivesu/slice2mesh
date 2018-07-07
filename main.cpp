@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <cinolib/gui/qt/qt_gui_tools.h>
 #include <cinolib/drawable_sliced_object.h>
+#include "common.h"
 
 using namespace cinolib;
 
@@ -17,7 +18,7 @@ int main(int argc, char *argv[])
     gui.show();
 
     // CMD+1 to show visual controls.
-    SurfaceMeshControlPanel<DrawableTrimesh<>> panel(&obj, &gui);
+    SurfaceMeshControlPanel<DrawableSlicedObj<>> panel(&obj, &gui);
     QApplication::connect(new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_1), &gui), &QShortcut::activated, [&](){panel.show();});
 
     return a.exec();
