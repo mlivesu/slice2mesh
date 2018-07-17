@@ -1,6 +1,6 @@
 #include "slice2plc.h"
 #include "edge_processing.h"
-#include "trianglulate.h"1
+#include "trianglulate.h"
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -15,7 +15,6 @@ void initialize(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
         std::vector<vec3d> v;
         std::vector<uint>  e;
         obj.slice_segments(sid,v,e);
-        /* PORTING ISSUE? forse non dovrei duplicare i vertici quì!!!!!! TODO */
 
         uint base_addr = data.v_list.size();
 
@@ -49,7 +48,7 @@ void mesh_vertical(const DrawableSlicedObj<> & obj,
     for(uint sid=0; sid<obj.num_slices();           ++sid)
     for(uint eid=0; eid<data.e_list.at(sid).size(); ++eid) // for each segment
     {
-        E_data & e = data.e_list.at(sid).at(eid);
+        const E_data & e = data.e_list.at(sid).at(eid);
         int vids[4] =
         {
             e.endpoints[0],
@@ -73,14 +72,14 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
                            std::vector<uint>   & tris,
                            std::vector<int>    & labels)
 {
-    for(uint sid=0; sid<obj.size(); ++sid) // for each slice
+    for(uint sid=0; sid<obj.num_slices(); ++sid) // for each slice
     {
         std::vector<uint> segs;
         std::set<uint>    unique_slice_verts;
 
         for(uint eid=0; eid<data.e_list.at(sid).size(); ++eid) // for each segment
         {
-            E_data & e = data.e_list.at(sid).at(eid);
+            const E_data & e = data.e_list.at(sid).at(eid);
             int  vid_A = e.endpoints[0]; assert(vid_A != -1);
             int  vid_B = e.endpoints[1]; assert(vid_B != -1);
 
@@ -96,11 +95,11 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
             unique_slice_verts.insert(vid_B);
         }
 
-        if (sid > 0)
+        if(sid > 0)
         {
             for(uint eid=0; eid<data.e_list.at(sid-1).size(); ++eid) // for each segment
             {
-                E_data & e = data.e_list.at(sid-1).at(eid);
+                const E_data & e = data.e_list.at(sid-1).at(eid);
                 int  vid_A = data.v_list[e.endpoints[0]].lifted_image; assert(vid_A != -1);
                 int  vid_B = data.v_list[e.endpoints[1]].lifted_image; assert(vid_B != -1);
 
@@ -143,7 +142,7 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
         //for(auto c : segs_in)   std::cout << "seg: " << c << std::endl;
         std::vector<double> holes_in, coords_out;
         std::vector<uint> tris_out;
-        triangle_wrap(coords_in, segs_in, holes_in, obj.slice(sid).z_coord, "Q", coords_out, tris_out);
+        triangle_wrap(coords_in, segs_in, holes_in, obj.slice_z(sid), "", coords_out, tris_out);
 
         //static int count = 0;
         //Trimesh<> m_tmp;
@@ -180,8 +179,8 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
                        data.v_list.at(vid_B).pos +
                        data.v_list.at(vid_C).pos) / 3.0;
 
-            bool belongs_to_curr = obj.slice(sid).contains(p.x(),p.y());
-            bool belongs_to_prev = (sid > 0 && obj.slice(sid-1).contains(p.x(),p.y()));
+            bool belongs_to_curr = obj.slice_contains(sid, vec2d(p));
+            bool belongs_to_prev = (sid > 0 && obj.slice_contains(sid-1,vec2d(p)));
 
             if (belongs_to_curr || belongs_to_prev)
             {
@@ -196,7 +195,7 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
                 }
                 else
                 if (!belongs_to_curr &&  belongs_to_prev) labels.push_back(SRF_FACE_UP);   else
-                if ( belongs_to_curr &&  belongs_to_prev && (int)sid < obj.n_layers()-1) labels.push_back(INTERNAL_FACE);
+                if ( belongs_to_curr &&  belongs_to_prev && sid < obj.num_slices()-1) labels.push_back(INTERNAL_FACE);
                 else
                 {
                     labels.push_back(SRF_FACE_UP);
@@ -210,22 +209,27 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
 
 void slice2plc(const DrawableSlicedObj<> & obj, DrawableTrimesh<> & plc)
 {
-    SLICE2MESH_data data;
+    assert(obj.num_slices() >= 2);
 
-    if(obj.num_slices()<2) return;
+    SLICE2MESH_data data;
 
     initialize(obj, data);
     edge_wise_intersections(obj, data);
 
+    std::vector<vec3d> verts;
+    for(V_data p : data.v_list) verts.push_back(p.pos);
+
     std::vector<uint> tris;
     std::vector<int>  labels;
-    mesh_vertical(obj, data, tris, labels);
     mesh_horizontal(obj, data, tris, labels);
+    //mesh_vertical(obj, data, tris, labels);
 
-    //for(V_data p : v_list)
-    //{
-    //    coords.push_back(p.pos.x());
-    //    coords.push_back(p.pos.y());
-    //    coords.push_back(p.pos.z());
-    //}
+    plc = DrawableTrimesh<>(verts, tris);
+    for(uint pid=0; pid<plc.num_polys(); ++pid)
+    {
+        plc.poly_data(pid).label = labels.at(pid);
+    }
+
+    plc.poly_color_wrt_label();
+    plc.updateGL();
 }

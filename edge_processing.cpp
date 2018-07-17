@@ -120,7 +120,7 @@ void edge_wise_intersections(const DrawableSlicedObj<> & obj, SLICE2MESH_data & 
     for(uint ei =0; ei <data.e_list.at(sid  ).size(); ++ei ) // for each segment below
     for(uint ej =0; ej <data.e_list.at(sid+1).size(); ++ej ) // for each segment above
     {
-        process_edge_pair(data.v_list, data.e_list.at(sid).at(ei), data.e_list.at(sid).at(ej));
+        process_edge_pair(data.v_list, data.e_list.at(sid).at(ei), data.e_list.at(sid+1).at(ej));
     }
 
     lift_unlifted_edge_extrema(obj, data);
@@ -141,8 +141,6 @@ void process_edge_pair(std::vector<V_data> & points,
                        E_data              & e_below,
                        E_data              & e_above)
 {
-    using namespace cinolib;
-
     int vids[4] =
     {
         e_below.endpoints[0],
