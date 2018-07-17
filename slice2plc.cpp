@@ -45,7 +45,7 @@ void mesh_vertical(const DrawableSlicedObj<> & obj,
                          std::vector<uint>   & tris,
                          std::vector<int>    & labels)
 {
-    for(uint sid=0; sid<obj.num_slices();           ++sid)
+    for(uint sid=0; sid<obj.num_slices()-1;         ++sid)
     for(uint eid=0; eid<data.e_list.at(sid).size(); ++eid) // for each segment
     {
         const E_data & e = data.e_list.at(sid).at(eid);
@@ -222,7 +222,7 @@ void slice2plc(const DrawableSlicedObj<> & obj, DrawableTrimesh<> & plc)
     std::vector<uint> tris;
     std::vector<int>  labels;
     mesh_horizontal(obj, data, tris, labels);
-    //mesh_vertical(obj, data, tris, labels);
+    mesh_vertical(obj, data, tris, labels);
 
     plc = DrawableTrimesh<>(verts, tris);
     for(uint pid=0; pid<plc.num_polys(); ++pid)
