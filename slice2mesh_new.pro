@@ -40,6 +40,6 @@ LIBS           += -ltriangle
 INCLUDEPATH    *= /usr/local/include
 #
 DEFINES        += CINOLIB_USES_TETGEN
-DEFINES        += TETLIB
+DEFINES        += TETLIBRARY
 LIBS           += -ltet
 INCLUDEPATH    *= /usr/local/include
