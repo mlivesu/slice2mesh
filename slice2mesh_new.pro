@@ -13,11 +13,13 @@ QMAKE_CXXFLAGS += -Wno-deprecated-declarations # gluQuadric gluSphere and gluCyl
 # ------------- SOURCES -------------- #
 # ------------------------------------ #
 SOURCES += main.cpp
+SOURCES += plc2tet.cpp
 SOURCES += trianglulate.cpp
 SOURCES += edge_processing.cpp
 SOURCES += slice2plc.cpp
 #
 HEADERS += common.h
+HEADERS += plc2tet.h
 HEADERS += trianglulate.h
 HEADERS += edge_processing.h
 HEADERS += slice2plc.h

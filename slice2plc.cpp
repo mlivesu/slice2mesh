@@ -142,7 +142,7 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
         //for(auto c : segs_in)   std::cout << "seg: " << c << std::endl;
         std::vector<double> holes_in, coords_out;
         std::vector<uint> tris_out;
-        triangle_wrap(coords_in, segs_in, holes_in, obj.slice_z(sid), "", coords_out, tris_out);
+        triangle_wrap(coords_in, segs_in, holes_in, obj.slice_z(sid), "Q", coords_out, tris_out);
 
         //static int count = 0;
         //Trimesh<> m_tmp;
