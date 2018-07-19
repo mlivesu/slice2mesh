@@ -23,12 +23,12 @@ void set_parameters(int argc, char *argv[])
 
     for(int i=2; i<argc; ++i)
     {
-        if(strcmp(argv[i], "-vp") == 0)
+        if(strcmp(argv[i], "-plc") == 0)
         {
             export_plc = true;
             std::cout << "info: export PLC" << std::endl;
         }
-        if(strcmp(argv[i], "-vp-only") == 0)
+        if(strcmp(argv[i], "-plc-only") == 0)
         {
             export_plc     = true;
             export_tetmesh = false;
@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
         std::cout << "Flags:                                                                                 " << std::endl;
         std::cout << "  -hatch    h  thicken 1D hatches by h amount and mesh them (default h=0.01)           " << std::endl;
         std::cout << "  -tetflags f  use f flags when calling tetgen to produce the tetmesh (default f=\"Q\")" << std::endl;
-        std::cout << "  -vp          export the PLC as a non-manifold triangle mesh                          " << std::endl;
-        std::cout << "  -vp-only     export ONLY the PLC                                                     " << std::endl;
+        std::cout << "  -plc         export the PLC as a non-manifold triangle mesh                          " << std::endl;
+        std::cout << "  -plc-only    export ONLY the PLC                                                     " << std::endl;
         //std::cout << "  -subsmp   f  slice subsampling. consider only one every f slices\n\n                 " << std::endl;
         return -1;
     }
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
     DrawableTrimesh<> plc;
     slice2plc(obj, plc);
-    if(export_plc) plc.save((base_name+".obj").c_str());
+    if(export_plc) plc.save((base_name+".off").c_str());
 
     DrawableTetmesh<> m;
     if(export_tetmesh)
