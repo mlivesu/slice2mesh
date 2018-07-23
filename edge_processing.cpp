@@ -11,7 +11,7 @@ enum
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void lift_unlifted_edge_extrema(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
+void lift_unlifted_edge_extrema(const SlicedObj<> & obj, SLICE2MESH_data & data)
 {
     for(uint sid=0; sid<obj.num_slices()-1;         ++sid) // for each slice
     for(uint eid=0; eid<data.e_list.at(sid).size(); ++eid) // for each segment
@@ -93,7 +93,7 @@ std::vector<int> order_split_points(const SLICE2MESH_data & data, const int vid_
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void order_split_points(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
+void order_split_points(const SlicedObj<> & obj, SLICE2MESH_data & data)
 {
     for(uint sid=0; sid<obj.num_slices()-1;         ++sid) // for each slice
     for(uint eid=0; eid<data.e_list.at(sid).size(); ++eid) // for each segment
@@ -114,7 +114,7 @@ void order_split_points(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void edge_wise_intersections(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
+void edge_wise_intersections(const SlicedObj<> & obj, SLICE2MESH_data & data)
 {
     for(uint sid=0; sid<obj.num_slices()-1;           ++sid) // for each slice
     for(uint ei =0; ei <data.e_list.at(sid  ).size(); ++ei ) // for each segment below

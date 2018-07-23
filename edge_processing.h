@@ -1,12 +1,12 @@
 #ifndef EDGE_PROCESSING_H
 #define EDGE_PROCESSING_H
 
-#include <cinolib/drawable_sliced_object.h>
+#include <cinolib/sliced_object.h>
 #include "common.h"
 
 
-void edge_wise_intersections(const DrawableSlicedObj<> & obj,
-                                   SLICE2MESH_data     & data);
+void edge_wise_intersections(const SlicedObj<>     & obj,
+                                   SLICE2MESH_data & data);
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
