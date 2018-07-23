@@ -1,6 +1,6 @@
 TEMPLATE        = app
 TARGET          = slice2mesh
-QT             += core opengl
+QT             += core
 CONFIG         += c++11
 CONFIG         -= app_bundle
 CINOLIB_PATH    = /Users/cino/Documents/research/devel/lib/CinoLib
@@ -30,12 +30,6 @@ HEADERS += slice2plc.h
 DEFINES        += CINOLIB_USES_OPENGL
 DEFINES        += CINOLIB_USES_QT
 DEFINES        += CINOLIB_USES_BOOST
-#
-DEFINES        += CINOLIB_USES_VTK
-INCLUDEPATH    += /usr/local/include/vtk-7.1
-QMAKE_LFLAGS   *= -L/usr/local/lib
-LIBS           += -lvtkCommonCore-7.1 -lvtkCommonDataModel-7.1 -lvtkIOCore-7.1 -lvtkIOLegacy-7.1 -lvtkIOXML-7.1
-QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override # shows up in vtk7...
 #
 DEFINES        += CINOLIB_USES_TRIANGLE
 LIBS           += -ltriangle

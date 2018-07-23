@@ -2,10 +2,10 @@
 #include <cinolib/tetgen_wrap.h>
 #include <cinolib/interval.h>
 
-void plc2tet(const DrawableTrimesh<>   & plc,
-             const DrawableSlicedObj<> & obj,
-             const std::string         & flags,
-                   DrawableTetmesh<>   & m)
+void plc2tet(const Trimesh<>   & plc,
+             const SlicedObj<> & obj,
+             const std::string & flags,
+                   Tetmesh<>   & m)
 {
     tetgen_wrap(plc, flags.c_str(), m);
 
@@ -27,5 +27,4 @@ void plc2tet(const DrawableTrimesh<>   & plc,
     }
 
     m.poly_color_wrt_label(true);
-    m.updateGL();
 }

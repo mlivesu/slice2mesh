@@ -1,10 +1,11 @@
 #include "slice2plc.h"
 #include "edge_processing.h"
 #include "trianglulate.h"
+#include <cinolib/profiler.h>
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void initialize(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
+void initialize(const SlicedObj<> & obj, SLICE2MESH_data & data)
 {
     data.v_list.clear();
     data.e_list.clear();
@@ -40,7 +41,7 @@ void initialize(const DrawableSlicedObj<> & obj, SLICE2MESH_data & data)
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void mesh_vertical(const DrawableSlicedObj<> & obj,
+void mesh_vertical(const SlicedObj<> & obj,
                    const SLICE2MESH_data     & data,
                          std::vector<uint>   & tris,
                          std::vector<int>    & labels)
@@ -67,7 +68,7 @@ void mesh_vertical(const DrawableSlicedObj<> & obj,
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void mesh_horizontal(const DrawableSlicedObj<> & obj,
+void mesh_horizontal(const SlicedObj<> & obj,
                      const SLICE2MESH_data     & data,
                            std::vector<uint>   & tris,
                            std::vector<int>    & labels)
@@ -207,29 +208,36 @@ void mesh_horizontal(const DrawableSlicedObj<> & obj,
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-void slice2plc(const DrawableSlicedObj<> & obj, DrawableTrimesh<> & plc)
+void slice2plc(const SlicedObj<> & obj, Trimesh<> & plc)
 {
     assert(obj.num_slices() >= 2);
 
     SLICE2MESH_data data;
 
+    Profiler profiler;
+
+    profiler.push("Slice2Mesh Initialization");
     initialize(obj, data);
     edge_wise_intersections(obj, data);
+    profiler.pop();
 
     std::vector<vec3d> verts;
     for(V_data p : data.v_list) verts.push_back(p.pos);
 
     std::vector<uint> tris;
     std::vector<int>  labels;
+    profiler.push("Horizontal meshing");
     mesh_horizontal(obj, data, tris, labels);
+    profiler.pop();
+    profiler.push("Vertical meshing");
     mesh_vertical(obj, data, tris, labels);
+    profiler.pop();
 
-    plc = DrawableTrimesh<>(verts, tris);
+    plc = Trimesh<>(verts, tris);
     for(uint pid=0; pid<plc.num_polys(); ++pid)
     {
         plc.poly_data(pid).label = labels.at(pid);
     }
 
     plc.poly_color_wrt_label();
-    plc.updateGL();
 }
