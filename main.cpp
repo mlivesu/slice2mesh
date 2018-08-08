@@ -11,7 +11,7 @@ using namespace cinolib;
 double      hatch_thickness = 0.01;
 bool        export_plc      = false;
 bool        export_tetmesh  = true;
-std::string tetgen_flags    = "Q";
+std::string tetgen_flags    = "QT1e-13";
 std::string base_name;
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -40,7 +40,7 @@ void set_parameters(int argc, char *argv[])
         }
         if(strcmp(argv[i], "-tetflags") == 0 && i+1<argc)
         {
-            tetgen_flags = std::string(argv[++i]);
+            tetgen_flags.append(argv[++i]);
             std::cout << "info: set tetgen flags to " << tetgen_flags << std::endl;
         }
     }
@@ -83,7 +83,6 @@ int main(int argc, char *argv[])
     profiler.push("slice2plc");
     slice2plc(obj, plc);
     profiler.pop();
-
     if(export_plc) plc.save((base_name+".off").c_str());
 
     Tetmesh<> m;
@@ -92,9 +91,6 @@ int main(int argc, char *argv[])
         profiler.push("plc2mesh");
         plc2tet(plc, obj, tetgen_flags.c_str(), m);
         profiler.pop();
-
         m.save((base_name+".mesh").c_str());
     }
-
-    return 0;
 }
