@@ -19,6 +19,7 @@ slice2mesh inputs sliced data for a 3D printer, and outputs a slice conformal vo
   booktitle = {Smart Tools and Apps for Graphics - Eurographics Italian Chapter Conference},
   title     = {{Slice2Mesh: meshing sliced data for the simulation of AM Processes}},
   year      = {2018},
-  publisher = {The Eurographics Association},
+  publisher = {The Eurographics Association}
+}
 ```
 
