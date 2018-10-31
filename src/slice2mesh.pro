@@ -32,10 +32,10 @@ DEFINES        += CINOLIB_USES_QT
 DEFINES        += CINOLIB_USES_BOOST
 #
 DEFINES        += CINOLIB_USES_TRIANGLE
-LIBS           += -ltriangle
+LIBS           += -L/usr/local/lib -ltriangle
 INCLUDEPATH    *= /usr/local/include
 #
 DEFINES        += CINOLIB_USES_TETGEN
 DEFINES        += TETLIBRARY
-LIBS           += -ltet
+LIBS           += -L/usr/local/lib -ltet
 INCLUDEPATH    *= /usr/local/include
