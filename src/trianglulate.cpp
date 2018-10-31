@@ -32,8 +32,8 @@ int triangulate_quad(const int                 vids[4],
     for(int curr : top_chain)
     {
         tris.push_back(pivot);
-        tris.push_back(prev);
         tris.push_back(curr);
+        tris.push_back(prev);
         prev = curr;
         ++count;
     }
@@ -43,8 +43,8 @@ int triangulate_quad(const int                 vids[4],
     for(int curr : bot_chain)
     {
         tris.push_back(pivot);
-        tris.push_back(curr);
         tris.push_back(prev);
+        tris.push_back(curr);
         prev = curr;
         ++count;
     }
