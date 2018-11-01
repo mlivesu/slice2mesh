@@ -1,9 +1,14 @@
+#include <QApplication>
+#include <cinolib/meshes/meshes.h>
+#include <cinolib/gui/qt/qt_gui_tools.h>
+
 #include <cinolib/sliced_object.h>
 #include <cinolib/string_utilities.h>
 #include <cinolib/profiler.h>
 #include "common.h"
 #include "slice2plc.h"
 #include "plc2tet.h"
+#include "plc_cleanup.h"
 
 using namespace cinolib;
 
@@ -79,11 +84,26 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    Trimesh<> plc;
+    QApplication app(argc,argv);
+
+    DrawableTrimesh<> plc;
     profiler.push("slice2plc");
     slice2plc(obj, plc);
     profiler.pop();
     if(export_plc) plc.save((base_name+".off").c_str());
+
+    cleanup_plc(plc, obj.slice_avg_thickness()*0.1);
+    plc.show_mesh_flat();
+    plc.show_marked_edge(true);
+    plc.show_marked_edge_width(10);
+    plc.updateGL();
+    GLcanvas gui;
+    gui.push_obj(&plc);
+    gui.show();
+
+    // CMD+1 to show mesh controls.
+    SurfaceMeshControlPanel<DrawableTrimesh<>> panel(&plc, &gui);
+    QApplication::connect(new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_1), &gui), &QShortcut::activated, [&](){panel.show();});
 
     Tetmesh<> m;
     if(export_tetmesh)
@@ -93,4 +113,6 @@ int main(int argc, char *argv[])
         profiler.pop();
         m.save((base_name+".mesh").c_str());
     }
+
+    return app.exec();
 }

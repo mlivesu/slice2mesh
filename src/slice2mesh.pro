@@ -1,24 +1,25 @@
+CINOLIB_PATH    = /Users/cino/Documents/research/devel/lib/CinoLib
 TEMPLATE        = app
 TARGET          = slice2mesh
-QT             += core
+QT             += core opengl
 CONFIG         += c++11
 CONFIG         -= app_bundle
-CINOLIB_PATH    = /Users/cino/Documents/research/devel/lib/CinoLib
 INCLUDEPATH    += $$CINOLIB_PATH/external/eigen
 INCLUDEPATH    += $$CINOLIB_PATH/include
-DEPENDPATH     += $$CINOLIB_PATH/include
 QMAKE_CXXFLAGS += -Wno-deprecated-declarations # gluQuadric gluSphere and gluCylinde are deprecated in macOS 10.9
 
 # ------------------------------------ #
 # ------------- SOURCES -------------- #
 # ------------------------------------ #
 SOURCES += main.cpp
+SOURCES += plc_cleanup.cpp
 SOURCES += plc2tet.cpp
 SOURCES += trianglulate.cpp
 SOURCES += edge_processing.cpp
 SOURCES += slice2plc.cpp
 #
 HEADERS += common.h
+HEADERS += plc_cleanup.h
 HEADERS += plc2tet.h
 HEADERS += trianglulate.h
 HEADERS += edge_processing.h
