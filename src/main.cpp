@@ -1,3 +1,4 @@
+#include <cinolib/export_cluster.h>
 #include <cinolib/sliced_object.h>
 #include <cinolib/string_utilities.h>
 #include <cinolib/profiler.h>
@@ -9,7 +10,6 @@ using namespace cinolib;
 
 // default parameters
 double      hatch_thickness = 0.01;
-bool        export_plc      = false;
 bool        export_tetmesh  = true;
 std::string tetgen_flags    = "QT1e-13";
 std::string base_name;
@@ -22,14 +22,8 @@ void set_parameters(int argc, char *argv[])
 
     for(int i=2; i<argc; ++i)
     {
-        if(strcmp(argv[i], "-plc") == 0)
-        {
-            export_plc = true;
-            std::cout << "info: export PLC" << std::endl;
-        }
         if(strcmp(argv[i], "-plc-only") == 0)
         {
-            export_plc     = true;
             export_tetmesh = false;
             std::cout << "info: export ONLY the PLC" << std::endl;
         }
@@ -58,8 +52,7 @@ int main(int argc, char *argv[])
         std::cout << "Flags:                                                                                 " << std::endl;
         std::cout << "  -hatch    h  thicken 1D hatches by h amount and mesh them (default h=0.01)           " << std::endl;
         std::cout << "  -tetflags f  use f flags when calling tetgen to produce the tetmesh (default f=\"Q\")" << std::endl;
-        std::cout << "  -plc         export the PLC as a non-manifold triangle mesh                          " << std::endl;
-        std::cout << "  -plc-only    export ONLY the PLC                                                     " << std::endl;
+        std::cout << "  -plc-only    export ONLY the PLC (no tetmesh will be produced)                       " << std::endl;
         //std::cout << "  -subsmp   f  slice subsampling. consider only one every f slices\n\n                 " << std::endl;
         return -1;
     }
@@ -83,11 +76,15 @@ int main(int argc, char *argv[])
     profiler.push("slice2plc");
     slice2plc(obj, plc);
     profiler.pop();
-    if(export_plc) plc.save((base_name+".off").c_str());
+    plc.save((base_name+"_plc.off").c_str());
 
-    Tetmesh<> m;
+    Trimesh<> plc_srf;
+    export_cluster(plc, {SRF_FACE_VERT, SRF_FACE_DOWN, SRF_FACE_UP}, plc_srf);
+    plc_srf.save((base_name+"_plc_srf.off").c_str());
+
     if(export_tetmesh)
     {
+        Tetmesh<> m;
         profiler.push("plc2mesh");
         plc2tet(plc, obj, tetgen_flags.c_str(), m);
         profiler.pop();

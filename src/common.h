@@ -14,7 +14,7 @@ enum
     SRF_FACE_DOWN = 0x00000002, // External faces generated triangulating the slices (pointing downwards)
     SRF_FACE_UP   = 0x00000004, // External faces generated triangulating the slices (pointing upwards)
     INTERNAL_FACE = 0x00000008, // Internal Faces
-    TINY_FEATURE  = 0x00000010, // Features so tiny that are better to remove prior tetmeshing the PLC...
+  //TINY_FEATURE  = 0x00000010, // Features so tiny that are better to remove prior tetmeshing the PLC...
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
