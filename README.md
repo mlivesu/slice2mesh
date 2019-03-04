@@ -1,4 +1,4 @@
-# slice2mesh: a direct mesher of sliced data for the simulation of AM processes
+# slice2mesh: a Meshing Tool for the Simulation of Additive Manufacturing Processes
 
 
 [Marco Livesu](http://pers.ge.imati.cnr.it/livesu/), [Daniela Cabiddu](http://www.imati.cnr.it/index.php/people/8-curricula/119-daniela-cabiddu), [Marco Attene](http://pers.ge.imati.cnr.it/attene/PersonalPage/attene.html)
