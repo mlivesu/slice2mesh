@@ -22,7 +22,10 @@ slice2mesh inputs sliced data for a 3D printer, and outputs a slice conformal vo
   title     = {slice2mesh: a Meshing Tool for the Simulation of Additive Manufacturing Processes},
   journal   = {Computers \& Graphics},
   year      = {2019},
-  volume    = {(to appear)}
+  volume    = {80},
+  pages     = {73 - 84},
+  issn      = {0097-8493},
+  doi       = {10.1016/j.cag.2019.03.004}
 }
 
 @inproceedings{LCA18,
